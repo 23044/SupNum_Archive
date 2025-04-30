@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF"/> <!-- Couleur de fond du cercle (blanc ici) -->
+    <corners android:radius="25dp"/> <!-- Rayon de 25dp pour un cercle parfait dans un 50x50dp -->
+</shape>
