@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="download_cour1" type="id" />
+    <item name="download_cour2" type="id" />
+    <item name="text_cour1" type="id" />
+    <item name="text_cour2" type="id" />
+    <item name="download_exam1" type="id" />
+    <item name="download_test1" type="id" />
+    <item name="text_exam1" type="id" />
+    <item name="text_test1" type="id" />
+</resources>

@@ -1,0 +1,5 @@
+<!-- res/drawable/profile.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF5722"/> <!-- Couleur de fond -->
+    <corners android:radius="50dp"/> <!-- Rayon de 50% pour un cercle -->
+</shape>

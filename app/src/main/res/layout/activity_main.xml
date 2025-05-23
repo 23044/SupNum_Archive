@@ -1,226 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#5a263d"
+    android:padding="24dp">
 
+    <!-- Conteneur centré verticalement -->
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:id="@+id/centerContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <!-- Header amélioré -->
+        <!-- Logo avec bordure -->
+        <FrameLayout
+            android:id="@+id/framelog"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:background="@drawable/logo_border_background"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_supnum_archive_radous" />
+        </FrameLayout>
+
+        <!-- Texte Bienvenue -->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Bienvenue sur SupNum Archives"
+            android:textColor="#FFD088"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Texte Description -->
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:text="Accédez à toutes les ressources de SupNum en un clic !"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Boutons en bas -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingBottom="16dp"
-        android:weightSum="3">
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
-        <!-- Icône d'aide -->
-        <ImageView
-            android:id="@+id/help_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:src="@android:drawable/ic_menu_help"
-            android:contentDescription="Aide"
-            android:padding="8dp"
-            android:layout_gravity="start"
-            android:tint="#2196F3" />
-
-        <!-- Titre de l'app -->
-        <TextView
-            android:id="@+id/app_header"
-            android:text="Mon Application Étudiante"
-            android:textSize="20sp"
-            android:textColor="#2196F3"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <!-- Icône de profil -->
-        <ImageView
-            android:id="@+id/profile_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:src="@android:drawable/ic_menu_myplaces"
-            android:contentDescription="Profil"
-            android:padding="8dp"
-            android:layout_gravity="end"
-            app:tint="#2196F3" />
-    </LinearLayout>
-
-        <!-- Section Matières -->
-        <TextView
-            android:text="Semestres"
-            android:textStyle="bold"
-            android:textColor="#333"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp" />
-
-        <!-- Grille des Semestres -->
-        <GridLayout
+        <Button
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="3"
-            android:alignmentMode="alignMargins"
-            android:rowOrderPreserved="false"
-            android:layout_marginBottom="16dp">
+            android:layout_height="56dp"
+            android:background="@drawable/btn_login_background"
+            android:text="SE CONNECTER"
+            android:textColor="#FFD088"
+            android:textSize="16sp" />
 
-            <!-- S1 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S1"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <!-- S2 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S2"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <!-- S3 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S3"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <!-- S4 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S4"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <!-- S5 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S5"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <!-- S6 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:background="#FFFFFF"
-                android:elevation="4dp"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S6"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="#000000" />
-            </LinearLayout>
-        </GridLayout>
-
-        <!-- Section Supériérate -->
-        <TextView
-            android:text="Supériérate"
-            android:textStyle="bold"
-            android:textColor="#333"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp" />
-
-        <!-- Profil 1 -->
-        <include layout="@layout/profil_card"
-            android:id="@+id/profil1" />
-
-        <!-- Profil 2 -->
-        <include layout="@layout/profil_card"
-            android:id="@+id/profil2" />
-
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_login_background"
+            android:text="CRÉER UN COMPTE"
+            android:textColor="#FFD088"
+            android:textSize="16sp" />
     </LinearLayout>
-</ScrollView>
+
+</RelativeLayout>

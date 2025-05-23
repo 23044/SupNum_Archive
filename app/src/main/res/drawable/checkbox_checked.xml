@@ -1,0 +1,5 @@
+<!-- res/drawable/checkbox_checked.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#4CAF50"/> <!-- Couleur verte pour coché -->
+    <corners android:radius="50dp"/> <!-- Coins arrondis pour un cercle -->
+</shape>

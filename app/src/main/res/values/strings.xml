@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SupNum Archive</string>
+    <string name="title_td_tp">TDs et TPs : Matière1</string>
+    <string name="pdf_icon_description">PDF Icon</string>
+    <string name="td1_file_name">TD1.pdf</string>
+    <string name="download_started">Téléchargement commencé pour : %1$s</string>
+
 </resources>
