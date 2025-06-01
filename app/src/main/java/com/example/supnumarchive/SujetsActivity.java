@@ -55,6 +55,12 @@ public class SujetsActivity extends AppCompatActivity {
 
         downloadTest1.setOnClickListener(v -> downloadFile("Test1.pdf"));
         textTest1.setOnClickListener(v -> downloadFile("Test1.pdf"));
+
+        findViewById(R.id.icon_home).setOnClickListener(v -> startActivity(new Intent(this, HomeActivity.class)));
+        findViewById(R.id.icon_chat).setOnClickListener(v -> startActivity(new Intent(this, ChatActivity.class)));
+        findViewById(R.id.icon_notification).setOnClickListener(v -> startActivity(new Intent(this, NotificationActivity.class)));
+        findViewById(R.id.icon_telechrge).setOnClickListener(v -> startActivity(new Intent(this, DownloadActivity.class)));
+        findViewById(R.id.icon_back).setOnClickListener(v -> finish());
     }
 
     private void downloadFile(String fileName) {

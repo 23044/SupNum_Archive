@@ -1,12 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFAFA">
-    <!--  Header  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_marginTop="59px" android:layout_height="60dp" android:orientation="horizontal" android:padding="10dp" android:background="#FFFFFF" android:gravity="center_vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="68dp"
-            android:layout_height="60dp"
-            android:contentDescription="Logo"
-            android:src="@drawable/logo_supnum_archive_radous" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo_supnum_archive_radous"
+            android:contentDescription="Logo" />
+
         <TextView
             android:id="@+id/app_header"
             android:layout_width="0dp"
@@ -17,42 +30,159 @@
             android:text="Archive SupNum"
             android:textColor="#57273d"
             android:textSize="24sp"
-            android:textStyle="bold" />        <ImageView
+            android:textStyle="bold" />
+
+        <ImageView
             android:id="@+id/footer_profile_photo"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/circle_background"
             android:clickable="true"
-            android:clipToOutline="true"
-            android:contentDescription="Photo de profil"
             android:focusable="true"
+            android:onClick="onProfileClick"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatar" />    </LinearLayout>
-    <!--  Title  -->
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="CMs : Matière1" android:textStyle="bold" android:textSize="18sp" android:padding="16dp" android:textColor="#551A1A"/>
-    <!--  Divider  -->
-    <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#551A1A"/>
-    <!--  PDF List (set to fill remaining space)  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:padding="16dp">
-        <!--  PDF item  -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="8dp" android:gravity="center_vertical">
-            <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/icon_pdf" android:contentDescription="PDF Icon"/>
-            <TextView android:id="@+id/text_cour1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="cour1.pdf" android:textSize="16sp" android:paddingStart="10dp"/>
-            <ImageView android:id="@+id/download_cour1" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/telecharg" android:contentDescription="Download cour1"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="8dp" android:gravity="center_vertical">
-            <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/icon_pdf" android:contentDescription="PDF Icon"/>
-            <TextView android:id="@+id/text_cour2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="cour2.pdf" android:textSize="16sp" android:paddingStart="10dp"/>
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/icon_done" android:contentDescription="check"/>
-        </LinearLayout>
-        <!--  يمكنك تكرار هذا القسم لـ Td2.pdf و Td3.pdf  -->
+            android:src="@drawable/avatar"
+            android:contentDescription="Photo de profil" />
     </LinearLayout>
-    <!--  Bottom Navigation  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:background="#FFFFFF" android:gravity="center" android:orientation="horizontal">
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_home"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_chat"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_notification"/>
-        <ImageView android:id="@+id/download_cour2" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/telecharg" android:contentDescription="Download cour1"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_back"/>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CMs : Matière1"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:textColor="#551A1A" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#551A1A" />
+
+    <!-- PDF List -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- PDF item 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_pdf"
+                android:contentDescription="PDF Icon" />
+
+            <TextView
+                android:id="@+id/text_cour1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="cour1.pdf"
+                android:textSize="16sp"
+                android:paddingStart="10dp" />
+
+            <ImageView
+                android:id="@+id/download_cour1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/telecharg"
+                android:contentDescription="Download cour1" />
+        </LinearLayout>
+
+        <!-- PDF item 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_pdf"
+                android:contentDescription="PDF Icon" />
+
+            <TextView
+                android:id="@+id/text_cour2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="cour2.pdf"
+                android:textSize="16sp"
+                android:paddingStart="10dp" />
+
+            <ImageView
+                android:id="@+id/download_cour2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_done"
+                android:contentDescription="Check" />
+        </LinearLayout>
+
+        <!-- Tu peux dupliquer ce bloc pour Td2.pdf, Td3.pdf, etc. -->
+
     </LinearLayout>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/icon_home"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_home"
+            android:contentDescription="Icon Home" />
+
+        <ImageView
+            android:id="@+id/icon_chat"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_chat"
+            android:contentDescription="Icon Chat" />
+
+        <ImageView
+            android:id="@+id/icon_notification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_notification"
+            android:contentDescription="Icon Notification" />
+
+        <ImageView
+            android:id="@+id/icon_telechrge"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/telecharg"
+            android:contentDescription="Icon Download" />
+
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_back"
+            android:contentDescription="Icon Back" />
+    </LinearLayout>
+
 </LinearLayout>

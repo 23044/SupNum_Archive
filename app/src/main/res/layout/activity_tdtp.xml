@@ -46,12 +46,54 @@
         </LinearLayout>
         <!--  يمكنك تكرار هذا القسم لـ Td2.pdf و Td3.pdf  -->
     </LinearLayout>
-    <!--  Bottom Navigation  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:background="#FFFFFF" android:gravity="center" android:orientation="horizontal">
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_home"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_chat"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_notification"/>
-        <ImageView android:id="@+id/download_cour2" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/telecharg" android:contentDescription="Download cour1"/>
-        <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_marginHorizontal="20dp" android:src="@drawable/icon_back"/>
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/icon_home"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_home"
+            android:contentDescription="Icon Home" />
+
+        <ImageView
+            android:id="@+id/icon_chat"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_chat"
+            android:contentDescription="Icon Chat" />
+
+        <ImageView
+            android:id="@+id/icon_notification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_notification"
+            android:contentDescription="Icon Notification" />
+
+        <ImageView
+            android:id="@+id/icon_telechrge"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/telecharg"
+            android:contentDescription="Icon Download" />
+
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/icon_back"
+            android:contentDescription="Icon Back" />
     </LinearLayout>
+
 </LinearLayout>

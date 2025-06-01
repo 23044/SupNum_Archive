@@ -39,7 +39,7 @@ public class TDandTPActivity extends AppCompatActivity {
 
         // ربط الواجهات
         downloadTd1 = findViewById(R.id.download_cour1); // زر تحميل TD1
-        downloadTp1 = findViewById(R.id.download_cour2); // زر تحميل TP1
+//        downloadTp1 = findViewById(R.id.download_cour2); // زر تحميل TP1
 
         textTd1 = findViewById(R.id.text_cour1); // نص TD1
         textTp1 = findViewById(R.id.text_cour2); // نص TP1
@@ -61,6 +61,12 @@ public class TDandTPActivity extends AppCompatActivity {
             Intent intent = new Intent(TDandTPActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.icon_home).setOnClickListener(v -> startActivity(new Intent(this, HomeActivity.class)));
+        findViewById(R.id.icon_chat).setOnClickListener(v -> startActivity(new Intent(this, ChatActivity.class)));
+        findViewById(R.id.icon_notification).setOnClickListener(v -> startActivity(new Intent(this, NotificationActivity.class)));
+        findViewById(R.id.icon_telechrge).setOnClickListener(v -> startActivity(new Intent(this, DownloadActivity.class)));
+        findViewById(R.id.icon_back).setOnClickListener(v -> finish());
     }
 
     private void downloadFile(String fileName) {
