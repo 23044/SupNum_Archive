@@ -1,15 +1,15 @@
 package com.example.supnumarchive;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,46 +18,180 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class TDandTPActivity extends AppCompatActivity {
-    private static final int PERMISSION_REQUEST_CODE = 1001;
+    private static final int PERMISSION_REQUEST_CODE = 1004;
+    private static final String PREFS_NAME = "DownloadPrefs";
+    private static final String ASSETS_FOLDER = "tdtp";
 
-    private StorageReference storageReference;
+    private SharedPreferences sharedPreferences;
+    private LinearLayout fileContainer;
 
-    private ImageView downloadTd1, downloadTp1;
-    private TextView textTd1, textTp1;
+    // Liste des fichiers dans assets/tdtp/
+    private String[] fileList = {
+            "TD1.pdf",
+            "TP1.pdf",
+            "DEV11-TP2.pdf",
+            "DEV11-TP3.pdf",
+            "DEV11-TP4.pdf"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tdtp); // تأكد من اسم ملف XML
+        setContentView(R.layout.activity_tdtp);
 
-        // Firebase Storage reference
-        storageReference = FirebaseStorage.getInstance().getReference();
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        fileContainer = findViewById(R.id.pdf_list_container);
 
-        // ربط الواجهات
-        downloadTd1 = findViewById(R.id.download_cour1); // زر تحميل TD1
-//        downloadTp1 = findViewById(R.id.download_cour2); // زر تحميل TP1
-
-        textTd1 = findViewById(R.id.text_cour1); // نص TD1
-        textTp1 = findViewById(R.id.text_cour2); // نص TP1
-
-        // صلاحية التخزين
+        // Vérifier les permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkPermission()) {
             requestPermission();
         }
 
-        // تحميل عند الضغط على الأيقونة أو النص
-        downloadTd1.setOnClickListener(v -> downloadFile("TD1.pdf"));
-        textTd1.setOnClickListener(v -> downloadFile("TD1.pdf"));
+        // Générer la liste des fichiers
+        generateFileList();
 
-        downloadTp1.setOnClickListener(v -> downloadFile("TP1.pdf"));
-        textTp1.setOnClickListener(v -> downloadFile("TP1.pdf"));
+        // Configuration de la navigation
+        setupNavigation();
+    }
 
-        ImageView profilephoto = findViewById(R.id.footer_profile_photo);
-        profilephoto.setOnClickListener(v -> {
+    private void generateFileList() {
+        fileContainer.removeAllViews();
+
+        for (String fileName : fileList) {
+            addFileRow(fileName);
+        }
+    }
+
+    private void addFileRow(String fileName) {
+        // Créer une ligne pour chaque fichier
+        LinearLayout fileRow = new LinearLayout(this);
+        fileRow.setOrientation(LinearLayout.HORIZONTAL);
+        fileRow.setPadding(0, 16, 0, 16);
+
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        fileRow.setLayoutParams(rowParams);
+
+        // Icône PDF
+        ImageView pdfIcon = new ImageView(this);
+        pdfIcon.setImageResource(R.drawable.icon_pdf);
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(90, 90);
+        iconParams.setMarginEnd(30);
+        pdfIcon.setLayoutParams(iconParams);
+
+        // Nom du fichier
+        TextView fileNameText = new TextView(this);
+        fileNameText.setText(fileName);
+        fileNameText.setTextSize(16);
+        fileNameText.setTextColor(getColor(R.color.black));
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1
+        );
+        fileNameText.setLayoutParams(textParams);
+
+        // Bouton de téléchargement
+        ImageView downloadButton = new ImageView(this);
+        updateDownloadIcon(downloadButton, fileName);
+        LinearLayout.LayoutParams downloadParams = new LinearLayout.LayoutParams(72, 72);
+        downloadButton.setLayoutParams(downloadParams);
+        downloadButton.setClickable(true);
+        downloadButton.setFocusable(true);
+
+        // Action de téléchargement
+        downloadButton.setOnClickListener(v -> downloadFile(fileName, downloadButton));
+        fileNameText.setOnClickListener(v -> downloadFile(fileName, downloadButton));
+
+        // Ajouter les éléments à la ligne
+        fileRow.addView(pdfIcon);
+        fileRow.addView(fileNameText);
+        fileRow.addView(downloadButton);
+
+        // Ajouter la ligne au conteneur
+        fileContainer.addView(fileRow);
+    }
+
+    private void downloadFile(String fileName, ImageView downloadButton) {
+        // Vérifier si déjà téléchargé
+        if (isFileDownloaded(fileName)) {
+            Toast.makeText(this, fileName + " est déjà téléchargé", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            // Copier le fichier depuis assets vers Downloads
+            copyAssetToDownloads(fileName);
+
+            // Marquer comme téléchargé
+            markFileAsDownloaded(fileName);
+
+            // Mettre à jour l'icône
+            updateDownloadIcon(downloadButton, fileName);
+
+            Toast.makeText(this, fileName + " téléchargé avec succès!", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            Toast.makeText(this, "Erreur lors du téléchargement: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void copyAssetToDownloads(String fileName) throws IOException {
+        // Chemin source dans assets
+        String assetPath = ASSETS_FOLDER + "/" + fileName;
+
+        // Chemin destination dans Downloads
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File destinationFile = new File(downloadsDir, fileName);
+
+        // Ouvrir le fichier depuis assets
+        InputStream inputStream = getAssets().open(assetPath);
+
+        // Créer le fichier de destination
+        FileOutputStream outputStream = new FileOutputStream(destinationFile);
+
+        // Copier le contenu
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) > 0) {
+            outputStream.write(buffer, 0, length);
+        }
+
+        // Fermer les flux
+        inputStream.close();
+        outputStream.close();
+    }
+
+    private void updateDownloadIcon(ImageView downloadButton, String fileName) {
+        if (isFileDownloaded(fileName)) {
+            downloadButton.setImageResource(R.drawable.icon_done);
+            downloadButton.setContentDescription("Téléchargé: " + fileName);
+        } else {
+            downloadButton.setImageResource(R.drawable.telecharg);
+            downloadButton.setContentDescription("Télécharger: " + fileName);
+        }
+    }
+
+    private void markFileAsDownloaded(String fileName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("downloaded_" + fileName, true);
+        editor.apply();
+    }
+
+    private boolean isFileDownloaded(String fileName) {
+        return sharedPreferences.getBoolean("downloaded_" + fileName, false);
+    }
+
+    private void setupNavigation() {
+        ImageView profilePhoto = findViewById(R.id.footer_profile_photo);
+        profilePhoto.setOnClickListener(v -> {
             Intent intent = new Intent(TDandTPActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
@@ -69,53 +203,39 @@ public class TDandTPActivity extends AppCompatActivity {
         findViewById(R.id.icon_back).setOnClickListener(v -> finish());
     }
 
-    private void downloadFile(String fileName) {
-        StorageReference fileRef = storageReference.child("pdfs/" + fileName);
-
-        fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            startDownload(this, fileName.replace(".pdf", ""), ".pdf", Environment.DIRECTORY_DOWNLOADS, uri.toString());
-            Toast.makeText(this, "Downloading: " + fileName, Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to download: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        });
-    }
-
-    public static void startDownload(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(destinationDirectory, fileName + fileExtension);
-
-        if (downloadManager != null) {
-            downloadManager.enqueue(request);
+    private boolean checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            int write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED;
         }
     }
 
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
-
     private void requestPermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                PERMISSION_REQUEST_CODE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Pour Android 11+
+            Toast.makeText(this, "Veuillez autoriser l'accès aux fichiers dans les paramètres", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission accordée!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permission refusée!", Toast.LENGTH_SHORT).show();
             }
         }
     }

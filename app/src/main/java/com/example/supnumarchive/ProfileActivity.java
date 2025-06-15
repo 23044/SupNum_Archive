@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ImageView profileImage;
     private TextView nameTextView, emailTextView;
-    private Button editProfileBtn, clearCacheBtn, clearHistoryBtn;
+    private Button editProfileBtn, clearCacheBtn, clearHistoryBtn, logoutButton;
     private FirebaseProfileManager profileManager;
 
     @Override
@@ -45,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         editProfileBtn = findViewById(R.id.edit_profile_btn);
         clearCacheBtn = findViewById(R.id.clear_cache_btn);
         clearHistoryBtn = findViewById(R.id.clear_history_btn);
+        logoutButton = findViewById(R.id.logout_button);
 
         loadProfileData();
 
@@ -58,6 +58,13 @@ public class ProfileActivity extends AppCompatActivity {
             });
             dialog.show(getSupportFragmentManager(), "EditProfileDialog");
         });
+
+        logoutButton.setOnClickListener(v -> {
+            new SessionManager(this).logout();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
+
         findViewById(R.id.icon_home).setOnClickListener(v -> startActivity(new Intent(this, HomeActivity.class)));
         findViewById(R.id.icon_chat).setOnClickListener(v -> startActivity(new Intent(this, ChatActivity.class)));
         findViewById(R.id.icon_notification).setOnClickListener(v -> startActivity(new Intent(this, NotificationActivity.class)));
@@ -68,11 +75,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadProfileData() {
+        SessionManager session = new SessionManager(this);
+        nameTextView.setText(session.getUsername());
+        emailTextView.setText(session.getEmail());
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            nameTextView.setText(currentUser.getDisplayName());
-            emailTextView.setText(currentUser.getEmail());
-
             profileManager.getProfileImageUrl().addOnSuccessListener(uri -> {
                 Glide.with(this)
                         .load(uri)

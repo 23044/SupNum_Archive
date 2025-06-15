@@ -50,4 +50,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.github.bumptech.glide:glide:4.13.2")  // or the latest version
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.2")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 }

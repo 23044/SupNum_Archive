@@ -3,7 +3,6 @@ package com.example.supnumarchive;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,14 +16,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
-    // Déclaration des vues
     private EditText SignupUsername, SignupEmail, passwordEditText;
     private TextView goToLogin;
     private Button signupButton;
     private ImageButton togglePasswordButton;
     private boolean isPasswordVisible = false;
 
-    // Références Firebase
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
@@ -33,19 +30,15 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Initialisation des vues
         initializeViews();
 
-        // Gestion du clic sur "Se connecter"
         goToLogin.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             finish();
         });
 
-        // Gestion de la visibilité du mot de passe
         togglePasswordButton.setOnClickListener(v -> togglePasswordVisibility());
 
-        // Gestion de l'inscription
         signupButton.setOnClickListener(v -> registerUser());
     }
 
@@ -71,12 +64,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        // Récupération des valeurs
         String username = SignupUsername.getText().toString().trim();
         String email = SignupEmail.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        // Validation des champs
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
             return;
@@ -92,26 +83,22 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialisation Firebase
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("users");
 
-        // Création d'un ID unique
         String userId = reference.push().getKey();
-
-        // Création de l'objet utilisateur
         HelperClass helperClass = new HelperClass(email, password, username);
 
-        // Enregistrement dans Firebase
         reference.child(userId).setValue(helperClass)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        SessionManager session = new SessionManager(SignupActivity.this);
+                        session.createSession(email, username);
                         Toast.makeText(SignupActivity.this, "Compte créé avec succès", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                         finish();
                     } else {
                         Toast.makeText(SignupActivity.this, "Erreur: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("FIREBASE_ERROR", "Erreur d'inscription", task.getException());
                     }
                 });
     }

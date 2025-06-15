@@ -38,50 +38,40 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialisation des vues
         loginButton = findViewById(R.id.loginButton);
-        loginEmail = findViewById(R.id.LoginEmail); // Assurez-vous que l'ID correspond à votre XML
+        loginEmail = findViewById(R.id.LoginEmail);
         passwordEditText = findViewById(R.id.passwordEditText);
         togglePasswordButton = findViewById(R.id.togglePasswordButton);
         signupText = findViewById(R.id.signupText);
         forgotPasswordText = findViewById(R.id.forgotPasswordText);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!validateEmail() || !validatePassword()) {
-                    // Les messages d'erreur sont déjà gérés dans les méthodes validate
-                } else {
-                    checkUser();
-                }
+        // Gestion des clics sur le bouton de connexion
+        loginButton.setOnClickListener(view -> {
+            if (validateEmail() && validatePassword()) {
+                checkUser();
             }
         });
 
-        signupText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-            }
+        // Redirection vers l'activité d'inscription
+        signupText.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
 
-        togglePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isPasswordVisible) {
-                    // Masquer le mot de passe
-                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    togglePasswordButton.setImageResource(R.drawable.baseline_visibility_off_24);
-                } else {
-                    // Afficher le mot de passe
-                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    togglePasswordButton.setImageResource(R.drawable.baseline_visibility_off_24);
-                }
-                isPasswordVisible = !isPasswordVisible;
-                passwordEditText.setSelection(passwordEditText.getText().length());
+        // Gestion de la visibilité du mot de passe
+        togglePasswordButton.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                togglePasswordButton.setImageResource(R.drawable.baseline_visibility_off_24);
+            } else {
+                passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                togglePasswordButton.setImageResource(R.drawable.baseline_visibility_on_24); // Correction ici pour l'icône visible
             }
+            isPasswordVisible = !isPasswordVisible;
+            passwordEditText.setSelection(passwordEditText.getText().length());
         });
     }
 
-    private Boolean validateEmail() {
-        String val = loginEmail.getText().toString();
+    private boolean validateEmail() {
+        String val = loginEmail.getText().toString().trim();
         if (val.isEmpty()) {
             loginEmail.setError("Email ne peut pas être vide");
             return false;
@@ -91,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private Boolean validatePassword() {
-        String val = passwordEditText.getText().toString();
+    private boolean validatePassword() {
+        String val = passwordEditText.getText().toString().trim();
         if (val.isEmpty()) {
             passwordEditText.setError("Le mot de passe ne peut pas être vide");
             return false;
@@ -117,34 +107,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("LoginActivity", "onDataChange called");
                 if (snapshot.exists()) {
-                    // Trouver l'utilisateur avec cet email
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         String passwordFromDB = userSnapshot.child("password").getValue(String.class);
+                        String usernameFromDB = userSnapshot.child("username").getValue(String.class);
 
                         if (passwordFromDB != null) {
-                            passwordFromDB = passwordFromDB.trim(); // IMPORTANT: Enlever les espaces
+                            passwordFromDB = passwordFromDB.trim();
                         }
 
                         Log.d("LoginActivity", "Mot de passe de la base de données: " + passwordFromDB);
 
                         if (Objects.equals(passwordFromDB, userPassword)) {
                             // Mot de passe correct
-                            loginEmail.setError(null);
-                            Log.d("LoginActivity", "Mot de passe correct. Lancement de HomeActivity.");
+                            SessionManager session = new SessionManager(LoginActivity.this);
+                            session.createSession(userEmail, usernameFromDB);
+
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
-                            finish(); // Fermer l'activité de login
-                            return; // IMPORTANT: Sortir après avoir trouvé l'utilisateur
+                            finish();
+                            return; 
                         } else {
-                            // Mot de passe incorrect
                             Log.d("LoginActivity", "Mot de passe incorrect.");
                             passwordEditText.setError("Mot de passe incorrect");
                             passwordEditText.requestFocus();
                         }
-                        return; // Sortir après avoir trouvé l'utilisateur
                     }
                 } else {
-                    // Utilisateur non trouvé
                     Log.d("LoginActivity", "L'utilisateur n'existe pas !");
                     loginEmail.setError("L'utilisateur n'existe pas !");
                     loginEmail.requestFocus();

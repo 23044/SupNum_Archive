@@ -277,11 +277,20 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="Clear History"
-        style="@style/Widget.AppCompat.Button.Borderless"
+       style="@style/Widget.AppCompat.Button.Borderless"
         android:textColor="#F44336"
         android:drawableStart="@drawable/ic_clear_history"
         android:drawablePadding="8dp"
         android:drawableTint="#F44336"/>
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Déconnexion"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FF0000"
+        android:textColor="#FFFFFF"/>
 
     <!-- Bottom Navigation -->
     <LinearLayout
@@ -341,6 +350,9 @@
             android:layout_marginHorizontal="20dp"
             android:src="@drawable/icon_back"
             android:contentDescription="Icon Back" />
+
+
+
     </LinearLayout>
 
 </LinearLayout>

@@ -2,45 +2,39 @@ package com.example.supnumarchive;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Application;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.FirebaseApp;
-
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button btnLogin, btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Assure-toi que c'est le bon layout
+        setContentView(R.layout.activity_main); // Assurez-vous que le nom de votre layout est correct
 
-        Button btnLogin = findViewById(R.id.btn_login);
+        // Initialisation des boutons
+        btnLogin = findViewById(R.id.btn_login);
+        btnSignup = findViewById(R.id.btn_signup);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Redirection vers LoginActivity
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
+        // Vérifiez si l'utilisateur est déjà connecté
+        SessionManager session = new SessionManager(this);
+        if (session.isLoggedIn()) {
+            // Redirigez vers HomeActivity si l'utilisateur est connecté
+            startActivity(new Intent(this, HomeActivity.class));
+            finish(); // Fermez MainActivity
+        }
+
+        // Gestion des clics sur les boutons
+        btnLogin.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
 
-        Button btn_signup = findViewById(R.id.btn_signup);
-        btn_signup.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
+        btnSignup.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, SignupActivity.class));
         });
-
     }
 }

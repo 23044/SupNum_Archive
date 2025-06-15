@@ -1,8 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFAFA">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
 
-    <!--  Header  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal" android:padding="10dp" android:layout_marginTop="59px" android:background="#FFFFFF" android:gravity="center_vertical">
-        <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@drawable/logo_supnum_archive_radous" android:contentDescription="Logo"/>
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo_supnum_archive_radous"
+            android:contentDescription="Logo" />
 
         <TextView
             android:id="@+id/app_header"
@@ -18,34 +35,50 @@
 
         <ImageView
             android:id="@+id/footer_profile_photo"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/circle_background"
             android:clickable="true"
-            android:clipToOutline="true"
-            android:contentDescription="Photo de profil"
             android:focusable="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatar" />      </LinearLayout>
-    <!--  Title  -->
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TDs et TPs : Matière1" android:textStyle="bold" android:textSize="18sp" android:padding="16dp" android:textColor="#551A1A"/>
-    <!--  Divider  -->
-    <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#551A1A"/>
-    <!--  PDF List (set to fill remaining space)  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:padding="16dp">
-        <!--  PDF item  -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="8dp" android:gravity="center_vertical">
-            <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/icon_pdf" android:contentDescription="PDF Icon"/>
-            <TextView android:id="@+id/text_cour1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TD1.pdf" android:textSize="16sp" android:paddingStart="10dp"/>
-            <ImageView android:id="@+id/download_cour1" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/icon_done" android:contentDescription="Download cour1"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingVertical="8dp" android:gravity="center_vertical">
-            <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@drawable/icon_pdf" android:contentDescription="PDF Icon"/>
-            <TextView android:id="@+id/text_cour2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TP1.pdf" android:textSize="16sp" android:paddingStart="10dp"/>
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/telecharg" android:contentDescription="check"/>
-        </LinearLayout>
-        <!--  يمكنك تكرار هذا القسم لـ Td2.pdf و Td3.pdf  -->
+            android:src="@drawable/avatar"
+            android:contentDescription="Photo de profil" />
     </LinearLayout>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TD/TP : Travaux Dirigés et Pratiques"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:textColor="#551A1A" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#551A1A" />
+
+    <!-- PDF List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/pdf_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- PDF items will be added programmatically -->
+
+        </LinearLayout>
+    </ScrollView>
+
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/footer_layout"

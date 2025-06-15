@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -39,7 +40,6 @@
             android:background="@drawable/circle_background"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onProfileClick"
             android:scaleType="centerCrop"
             android:src="@drawable/avatar"
             android:contentDescription="Photo de profil" />
@@ -49,7 +49,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CMs : Matière1"
+        android:text="CMs : Cours Magistraux"
         android:textStyle="bold"
         android:textSize="18sp"
         android:padding="16dp"
@@ -62,78 +62,22 @@
         android:background="#551A1A" />
 
     <!-- PDF List -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_weight="1">
 
-        <!-- PDF item 1 -->
         <LinearLayout
+            android:id="@+id/pdf_list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icon_pdf"
-                android:contentDescription="PDF Icon" />
+            <!-- PDF items will be added programmatically -->
 
-            <TextView
-                android:id="@+id/text_cour1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="cour1.pdf"
-                android:textSize="16sp"
-                android:paddingStart="10dp" />
-
-            <ImageView
-                android:id="@+id/download_cour1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/telecharg"
-                android:contentDescription="Download cour1" />
         </LinearLayout>
-
-        <!-- PDF item 2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icon_pdf"
-                android:contentDescription="PDF Icon" />
-
-            <TextView
-                android:id="@+id/text_cour2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="cour2.pdf"
-                android:textSize="16sp"
-                android:paddingStart="10dp" />
-
-            <ImageView
-                android:id="@+id/download_cour2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/icon_done"
-                android:contentDescription="Check" />
-        </LinearLayout>
-
-        <!-- Tu peux dupliquer ce bloc pour Td2.pdf, Td3.pdf, etc. -->
-
-    </LinearLayout>
+    </ScrollView>
 
     <!-- Bottom Navigation -->
     <LinearLayout
