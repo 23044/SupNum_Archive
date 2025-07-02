@@ -1,6 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/main" android:background="#FAFAFA">
-    <!--  Header  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_marginTop="59px" android:layout_height="60dp" android:orientation="horizontal" android:padding="10dp" android:background="#FFFFFF" android:gravity="center_vertical">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:padding="10dp"
+        android:gravity="center_vertical">
 
         <ImageView
             android:layout_width="72dp"
@@ -9,15 +23,15 @@
             android:src="@drawable/logo_supnum_archive_radous" />
 
         <TextView
-            android:id="@+id/app_header"
-            android:layout_width="212dp"
-            android:layout_height="29dp"
+            android:id="@+id/header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="Archive SupNum"
+            android:text="Messages"
             android:textColor="#57273d"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -30,29 +44,43 @@
             android:contentDescription="Photo de profil"
             android:focusable="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatar" />      </LinearLayout>
-    <!--  Title  -->
-    <View android:layout_width="match_parent" android:layout_height="2dp" android:background="#551A1A"/>
-    <!--  List of sujets  -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:padding="16dp">
-
-        <TextView
-            android:id="@+id/chat"
-            android:layout_width="358dp"
-            android:layout_height="29dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="Chat design activity "
-            android:textColor="#57273d"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:src="@drawable/avatar" />
     </LinearLayout>
-    <!-- Bottom Navigation -->
+
+    <!-- Liste des conversations -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/conversation_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer_layout"
+        android:layout_below="@id/header"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
+
+    <!-- Floating Action Button pour nouvelle conversation (au-dessus du footer) -->
+    <ImageButton
+        android:id="@+id/new_chat_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="#57273d"
+    android:background="@drawable/rounded_button"
+    android:contentDescription="Nouvelle discussion"
+    android:elevation="8dp"
+    android:scaleType="centerInside"
+    android:src="@drawable/ic_add" />
+
+
+    <!-- Footer Navigation -->
     <LinearLayout
         android:id="@+id/footer_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="#FFFFFF"
         android:gravity="center">
@@ -97,5 +125,4 @@
             android:src="@drawable/icon_back"
             android:contentDescription="Icon Back" />
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

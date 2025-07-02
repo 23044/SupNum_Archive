@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/doc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Titre du document" />
+
+    <EditText
+        android:id="@+id/doc_matiere"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Matière" />
+
+    <EditText
+        android:id="@+id/doc_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type (CM, TD, TP, Examen...)" />
+
+    <Button
+        android:id="@+id/select_file_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choisir un fichier PDF" />
+
+    <Button
+        android:id="@+id/upload_file_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Envoyer" />
+</LinearLayout>

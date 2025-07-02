@@ -11,8 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -22,13 +25,16 @@ public class SignupActivity extends AppCompatActivity {
     private ImageButton togglePasswordButton;
     private boolean isPasswordVisible = false;
 
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         initializeViews();
 
@@ -38,7 +44,6 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         togglePasswordButton.setOnClickListener(v -> togglePasswordVisibility());
-
         signupButton.setOnClickListener(v -> registerUser());
     }
 
@@ -83,23 +88,23 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("users");
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    String uid = auth.getCurrentUser().getUid();
 
-        String userId = reference.push().getKey();
-        HelperClass helperClass = new HelperClass(email, password, username);
+                    Map<String, Object> userData = new HashMap<>();
+                    userData.put("email", email);
+                    userData.put("username", username);
+                    userData.put("role", "etudiant"); // rôle par défaut
 
-        reference.child(userId).setValue(helperClass)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        SessionManager session = new SessionManager(SignupActivity.this);
-                        session.createSession(email, username);
-                        Toast.makeText(SignupActivity.this, "Compte créé avec succès", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(SignupActivity.this, "Erreur: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    firestore.collection("users").document(uid).set(userData)
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(this, "Compte créé avec succès", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                finish();
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(this, "Erreur Firestore : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Erreur Auth : " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
